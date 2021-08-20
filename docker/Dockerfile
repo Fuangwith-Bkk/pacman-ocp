@@ -8,11 +8,15 @@ WORKDIR /usr/src/app
 
 # Clone game source code
 # RUN git clone https://github.com/font/pacman.git .
-RUN git clone https://github.com/Fuangwith-Bkk/pacman-ocp.git .
+#RUN git clone https://github.com/Fuangwith-Bkk/pacman-ocp.git .
 
+COPY package*.json ./
 
 # Install app dependencies
 RUN npm install
+
+COPY . .
+
 
 # Expose port 8080
 EXPOSE 8080
