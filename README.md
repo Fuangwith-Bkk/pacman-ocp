@@ -63,6 +63,6 @@ docker push <registry>/<user>/pacman-ocp:<tag>
 - Developer console
 - +Add
 - `Git Repository` --> `From Dockerfile`
-- Git Repo URL: `https://github.com/Fuangwith-Bkk/pacman-ocp`
+- Git Repo URL: `https://github.com/Fuangwith-Bkk/pacman-ocp.git`
 - Dockerfile path: `docker/Dockerfile`
 - and add environment variables
