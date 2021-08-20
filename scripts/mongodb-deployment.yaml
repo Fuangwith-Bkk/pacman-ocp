@@ -1,0 +1,65 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: mongo
+  labels:
+    name: mongo
+    app.openshift.io/runtime: mongodb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: mongo
+  template:
+    metadata:
+      labels:
+        name: mongo
+    spec:
+      volumes:
+        - name: mongo-db
+          persistentVolumeClaim:
+            claimName: mongo-storage
+      containers:
+        - resources:
+            limits:
+              cpu: 500m
+              memory: 1536Mi
+            requests:
+              cpu: 50m
+              memory: 256Mi
+          readinessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - '-i'
+                - '-c'
+                - >-
+                  mongo 127.0.0.1:27017/$MONGODB_DATABASE -u $MONGODB_USER -p
+                  $MONGODB_PASSWORD --eval="quit()"
+          name: mongo
+          env:
+            - name: MONGODB_ADMIN_PASSWORD
+              value: passw0rd
+            - name: MONGODB_DATABASE
+              value: pacman
+            - name: MONGODB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-users-secret
+                  key: database-password
+            - name: MONGODB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-users-secret
+                  key: database-user
+          ports:
+            - name: mongo
+              containerPort: 27017
+              protocol: TCP
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: mongo-db
+              mountPath: /data/db
+          image: centos/mongodb-36-centos7
+
+  

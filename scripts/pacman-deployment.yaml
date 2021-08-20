@@ -1,0 +1,85 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: pacman-ocp
+  labels:
+    app: pacman-ocp
+    app.openshift.io/runtime: nodejs
+spec:
+  selector:
+    matchLabels:
+      app: pacman-ocp
+  template:
+    metadata:
+      labels:
+        app: pacman-ocp
+        deploymentconfig: pacman-ocp
+    spec:
+      containers:
+        - resources:
+            limits:
+              cpu: 100m
+              memory: 150Mi
+            requests:
+              cpu: 50m
+              memory: 50Mi
+          name: pacman-ocp
+          image: quay.io/fuangwit/pacman-ocp:0.1
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          env:
+            - name: MONGO_SERVICE_HOST
+              value: mongo
+            - name: MONGO_AUTH_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-users-secret
+                  key: database-user
+            - name: MONGO_AUTH_PWD
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-users-secret
+                  key: database-password
+            - name: MONGO_DATABASE
+              value: pacman
+            - name: MY_MONGO_PORT
+              value: '27017'
+            - name: MONGO_USE_SSL
+              value: 'false'
+            - name: MONGO_VALIDATE_SSL
+              value: 'false'
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: pacman-ocp
+  labels:
+    app: pacman-ocp
+spec:
+  ports:
+    - name: 8080-tcp
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: pacman-ocp
+
+---
+
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: pacman-ocp
+  labels:
+    app: pacman-ocp  
+spec:
+  to:
+    kind: Service
+    name: pacman-ocp
+    weight: 100
+  port:
+    targetPort: 8080-tcp
+
