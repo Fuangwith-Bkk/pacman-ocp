@@ -59,8 +59,10 @@ Once you're satisfied you can push the image to the container registry.
 docker push <registry>/<user>/pacman-ocp:<tag>
 ```
 
-### Building using an s2i image
-
-```
-s2i build . centos/nodejs-6-centos7 pacman
-```
+### Building using OpenShift S2I
+- Developer console
+- +Add
+- `Git Repository` --> `From Dockerfile`
+- Git Repo URL: `https://github.com/Fuangwith-Bkk/pacman-ocp`
+- Dockerfile path: `docker/Dockerfile`
+- and add environment variables
