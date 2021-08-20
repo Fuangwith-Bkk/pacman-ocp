@@ -4,7 +4,6 @@ FROM registry.access.redhat.com/ubi8/nodejs-12:latest
 MAINTAINER Ivan Font <ifont@redhat.com>
 
 # Create app directory
-RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 # Clone game source code
