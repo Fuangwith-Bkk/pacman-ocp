@@ -32,17 +32,17 @@ npm run dev
 
 ### Docker Container Image
 
-The [Dockerfile.local](docker/Dockerfile.local) performs the following steps:
+The [Dockerfile](docker/Dockerfile) performs the following steps:
 
 1. It is based on Red Hat Node.js 12 (registry.access.redhat.com/ubi8/nodejs-12:latest)
-1. It then clones the Pac-Man game into the configured application directory.
-1. Exposes port 8080 for the web server.
-1. Starts the Node.js application using `npm start`.
+2. It then clones the Pac-Man game into the configured application directory.
+3. Exposes port 8080 for the web server.
+4. Starts the Node.js application using `npm start`.
 
 To build the image run:
 
 ```
-docker build -t <registry>/<user>/pacman-ocp:<tag> -f docker/Dockerfile.local .
+docker build -t <registry>/<user>/pacman-ocp:<tag> .
 ```
 
 You can test the image by running:
@@ -62,7 +62,6 @@ docker push <registry>/<user>/pacman-ocp:<tag>
 ### Building using OpenShift S2I
 - Developer console
 - +Add
-- `Git Repository` --> `From Dockerfile`
+- `Git Repository` --> `From Git`
 - Git Repo URL: `https://github.com/Fuangwith-Bkk/pacman-ocp.git`
-- Dockerfile path: `docker/Dockerfile`
 - and add environment variables
