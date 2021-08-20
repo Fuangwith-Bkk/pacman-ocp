@@ -1,4 +1,5 @@
-FROM node:boron
+# FROM node:boron
+FROM registry.redhat.io/rhel8/nodejs-12
 
 MAINTAINER Ivan Font <ifont@redhat.com>
 
