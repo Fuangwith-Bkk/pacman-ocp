@@ -1,3 +1,12 @@
+# pacman on Red Hat OpenShift
+Container Image: quay.io/fuangwit/pacman-ocp:0.1
+
+
+
+
+
+
+
 # pacman
 Pac-Man
 
