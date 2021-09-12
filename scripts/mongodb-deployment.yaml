@@ -27,31 +27,18 @@ spec:
             requests:
               cpu: 50m
               memory: 256Mi
-          readinessProbe:
-            exec:
-              command:
-                - /bin/sh
-                - '-i'
-                - '-c'
-                - >-
-                  mongo 127.0.0.1:27017/$MONGODB_DATABASE -u $MONGODB_USER -p
-                  $MONGODB_PASSWORD --eval="quit()"
           name: mongo
-          env:
-            - name: MONGODB_ADMIN_PASSWORD
-              value: passw0rd
-            - name: MONGODB_DATABASE
-              value: pacman
-            - name: MONGODB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: mongodb-users-secret
-                  key: database-password
-            - name: MONGODB_USER
-              valueFrom:
-                secretKeyRef:
-                  name: mongodb-users-secret
-                  key: database-user
+          # env:
+          #   - name: MONGO_INITDB_ROOT_USERNAME
+          #     valueFrom:
+          #       secretKeyRef:
+          #         name: mongodb-users-secret
+          #         key: database-admin-user
+          #   - name: MONGO_INITDB_ROOT_PASSWORD
+          #     valueFrom:
+          #       secretKeyRef:
+          #         name: mongodb-users-secret
+          #         key: database-admin-password
           ports:
             - name: mongo
               containerPort: 27017
@@ -60,6 +47,4 @@ spec:
           volumeMounts:
             - name: mongo-db
               mountPath: /data/db
-          image: centos/mongodb-36-centos7
-
-  
+          image: mongo

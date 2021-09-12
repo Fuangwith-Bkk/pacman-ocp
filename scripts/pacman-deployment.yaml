@@ -31,24 +31,24 @@ spec:
           env:
             - name: MONGO_SERVICE_HOST
               value: mongo
-            - name: MONGO_AUTH_USER
-              valueFrom:
-                secretKeyRef:
-                  name: mongodb-users-secret
-                  key: database-user
-            - name: MONGO_AUTH_PWD
-              valueFrom:
-                secretKeyRef:
-                  name: mongodb-users-secret
-                  key: database-password
-            - name: MONGO_DATABASE
-              value: pacman
-            - name: MY_MONGO_PORT
-              value: '27017'
-            - name: MONGO_USE_SSL
-              value: 'false'
-            - name: MONGO_VALIDATE_SSL
-              value: 'false'
+            # - name: MONGO_AUTH_USER
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: mongodb-users-secret
+            #       key: database-user
+            # - name: MONGO_AUTH_PWD
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: mongodb-users-secret
+            #       key: database-password
+            # - name: MONGO_DATABASE
+            #   value: pacman
+            # - name: MY_MONGO_PORT
+            #   value: '27017'
+            # - name: MONGO_USE_SSL
+            #   value: 'false'
+            # - name: MONGO_VALIDATE_SSL
+            #   value: 'false'
 
 ---
 
