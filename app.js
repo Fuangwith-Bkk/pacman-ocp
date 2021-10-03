@@ -5,6 +5,21 @@ var path = require('path');
 var Database = require('./lib/database');
 var assert = require('assert');
 
+//metrics
+const promBundle = require("express-prom-bundle");
+// Add the options to the prometheus middleware most option are for http_request_duration_seconds histogram metric
+const metricsMiddleware = promBundle({
+    includeMethod: true, 
+    includePath: true, 
+    includeStatusCode: true, 
+    includeUp: true,
+    customLabels: {project_name: 'pacman-ocp', project_type: 'metrics'},
+    promClient: {
+        collectDefaultMetrics: {
+        }
+      }
+});
+
 // Constants
 
 // Routes
@@ -25,6 +40,12 @@ app.use('/', express.static(path.join(__dirname, 'public')));
 app.use('/highscores', highscores);
 app.use('/user', user);
 app.use('/location', loc);
+
+// add the prometheus middleware to all routes
+app.use(metricsMiddleware)
+app.get("/metrics",(req,res) => res.json({
+    "GET /metrics": "Metrics data"
+}));
 
 // Catch 404 and forward to error handler
 app.use(function(req, res, next) {
