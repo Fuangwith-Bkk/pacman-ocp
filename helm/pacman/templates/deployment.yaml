@@ -1,0 +1,33 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: pacman-ocp
+  labels:
+    app: pacman-ocp
+    app.openshift.io/runtime: nodejs
+spec:
+  selector:
+    matchLabels:
+      app: pacman-ocp
+  template:
+    metadata:
+      labels:
+        app: pacman-ocp
+        deploymentconfig: pacman-ocp
+    spec:
+      containers:
+        - resources:
+            limits:
+              cpu: 100m
+              memory: 150Mi
+            requests:
+              cpu: 50m
+              memory: 50Mi
+          name: pacman-ocp
+          image: quay.io/fuangwit/pacman-ocp:0.2
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          env:
+            - name: MONGO_SERVICE_HOST
+              value: mongo
